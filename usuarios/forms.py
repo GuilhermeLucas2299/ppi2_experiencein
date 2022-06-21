@@ -10,6 +10,7 @@ class RegistrarUsuarioForm(forms.Form):
     nome_empresa = forms.CharField(required=True)
 
     def is_valid(self):
+    
         valid = True
         if not super(RegistrarUsuarioForm, self).is_valid():
             self.adiciona_erro('Por favor, verifique os dados informados')

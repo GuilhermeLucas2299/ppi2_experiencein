@@ -4,6 +4,7 @@
 
 {% block body %}
 
+{{form.nome_empresa.value}}
     <form class="form-signin" role="form" action="{% url 'login' %}" method="post">
         {% csrf_token %}
 
