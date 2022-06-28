@@ -5,12 +5,18 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from perfis.models import Perfil, Convite
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import permission_required
+
 # importando redirect
 
 
 @login_required
 def index(request):
-    return render(request, 'index.html', {'perfis' : Perfil.objects.all(), 'perfil_logado' : get_perfil_logado(request)})
+    print(request.user.username) #novo
+    print(request.user.email) #novo
+    print(request.user.has_perm('perfis.add_convite')) #novo
+
+    return render(request,'index.html',{'perfis': Perfil.objects.all(), 'perfil_logado' : get_perfil_logado(request) })
 
 # código posterior omitido
 
@@ -36,13 +42,19 @@ def get_perfil_logado(request):
     return Perfil.objects.get(id=1)
 
 @login_required
+
+
+# outros imports omitidos
+
+
+#outras funções omitidas
+
+@permission_required('perfis.add_convite', raise_exception=True)
+@login_required
 def convidar(request, perfil_id):
-    
     perfil_a_convidar = Perfil.objects.get(id=perfil_id)
     perfil_logado = get_perfil_logado(request)
-    perfil_logado.convidar (perfil_a_convidar)
-    
-    # realizando redirecionamento
+    perfil_logado.convidar(perfil_a_convidar)
     return redirect('index')
 
 @login_required
